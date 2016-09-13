@@ -2,7 +2,7 @@
 #
 # TODO: Write doc for this thingamabob and don't forget to comment so the grader doesn't count off points
 # TODO: Fix the while loop checking to see if the player's moeny is below 0
-# TODO: Fix the amount of profit or loss
+#
 
 import random
 
@@ -22,7 +22,7 @@ exit_ticket = ""
 print("Welcome to shaved ice simulator 2016!")
 
 while exit_ticket is not ("no" or "n"):
-    while total_money > 0.0:
+    while total_money > 0.5:
         for k in range(1, 11):
             chance_for_rain = random.randint(1, 100)
 
