@@ -37,24 +37,22 @@ while exit_ticket is not ("no" or "n"):
             else:
                 print("It is clear and " + str(temperature) + " degrees outside")
 
-
-
-            desired_cones = input("How many cones of Shaved Ice will you make?")
+            desired_cones = int(input("How many cones of Shaved Ice will you make?"))
 
             break_my_program = True
 
             while break_my_program:
                 if desired_cones < 0:
                     print("You must enter 0 or more cones")
-                    desired_cones = input("How many cones of Shaved Ice will you make?")
+                    desired_cones = int(input("How many cones of Shaved Ice will you make?"))
                 elif desired_cones * cost_per_cone > total_money:
                     print("You don't have enough money to make that many cones")
-                    desired_cones = input("How many cones of Shaved Ice will you make?")
+                    desired_cones = int(input("How many cones of Shaved Ice will you make?"))
                 else:
                     break_my_program = False
 
             while desired_price <= 0:
-                desired_price = input("What price do you charge per cone?")
+                desired_price = float(input("What price do you charge per cone?"))
                 if desired_price <= 0:
                     print("Must enter greater than 0")
 
@@ -67,24 +65,30 @@ while exit_ticket is not ("no" or "n"):
             daily_customers = random.randint(0, max_customers)
             print("daily customer today is " + str(daily_customers))
 
+            if (desired_cones < daily_customers):  # Pls tell me if there's a more efficient way to do this
+                daily_profit_or_loss = (desired_price * desired_cones) - (
+                    desired_cones * cost_per_cone)
+            else:
+                daily_profit_or_loss = (desired_price * daily_customers) - (
+                    desired_cones * cost_per_cone)  #
 
-            daily_profit_or_loss = (desired_price * desired_cones) - (desired_cones * cost_per_cone) #TODO: FIX THIS ARGHHH
-
-            print("You made " + str(desired_cones) + " cones of Shaved Ice costing you $" + str(desired_cones * cost_per_cone))
-            print("You sold " + str(daily_customers) + " taking in $" + str(cost_per_cone * daily_customers) + " for a daily profit/"
-                                                                                             "loss of " + str(daily_profit_or_loss))
+            print("You made " + str(desired_cones) + " cones of Shaved Ice costing you $" + str(
+                desired_cones * cost_per_cone))
+            print("You sold " + str(daily_customers) + " taking in $" + str(
+                cost_per_cone * daily_customers) + " for a daily profit/"
+                                                   "loss of " + str(daily_profit_or_loss))
             total_money += daily_profit_or_loss
 
             daily_count += 1
             desired_price = -1.0
 
     if total_money <= 0:
-        print"You do not have enough money in the bank to make any Shaved Ice. Thanks for playing"
+        print("You do not have enough money in the bank to make any Shaved Ice. Thanks for playing")
 
     print("You played " + str(daily_count) + " days of the simulation and ended with $" + str(total_money))
 
     exit_ticket = input("Do you want to play again? Y/YES/N/NO").lower()
 
-    if exit_ticket is not("y" or "yes" or "n" or "no"):
+    if exit_ticket is not ("y" or "yes" or "n" or "no"):
         print("You must input Y or N only")
         exit_ticket = input("Do you want to play again? Y/YES/N/NO").lower()
