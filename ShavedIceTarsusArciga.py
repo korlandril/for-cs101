@@ -2,8 +2,7 @@
 #
 # TODO: Write doc for this thingamabob and don't forget to comment so the grader doesn't count off points
 # TODO: Clean up the code with some more convenient variable names
-# TODO: Fix number of days played
-
+# TODO: Fix string formatting
 import random
 
 
@@ -12,6 +11,7 @@ exit_ticket = "yes"
 print("Welcome to shaved ice simulator 2016!")
 
 while exit_ticket == "yes" or exit_ticket == "y":
+
     daily_profit_or_loss = 0.0
     temperature = 0
     rain = False
@@ -68,7 +68,7 @@ while exit_ticket == "yes" or exit_ticket == "y":
         daily_customers = random.randint(0, max_customers)
         print("daily customer today is " + str(daily_customers))
 
-        if (desired_cones < daily_customers):  # Pls tell me if there's a more efficient way to do this
+        if (desired_cones < daily_customers):
             daily_profit_or_loss = (desired_price * desired_cones) - (
                 desired_cones * cost_per_cone)
             actual_sold = desired_cones
@@ -77,11 +77,14 @@ while exit_ticket == "yes" or exit_ticket == "y":
                 desired_cones * cost_per_cone)
             actual_sold = daily_customers
 
-        print("You made " + str(desired_cones) + " cones of Shaved Ice costing you $" + str(
-            desired_cones * cost_per_cone))
-        print("You sold " + str(actual_sold) + " taking in $" + str(
-            desired_price * actual_sold) + " for a daily profit/"
-                                                   "loss of " + str(daily_profit_or_loss))
+        #print("You made " + str(desired_cones) + " cones of Shaved Ice costing you $" + str(
+           # desired_cones * cost_per_cone))
+        print('You made {} cones of Shaved Ice costing you ${:03.2f}'.format(desired_cones, (desired_cones * cost_per_cone)))
+        #print("You sold " + str(actual_sold) + " taking in $" + str(
+            #desired_price * actual_sold) + " for a daily profit/"
+                                                   #"loss of " + str(daily_profit_or_loss))
+        print('You sold {} taking in ${:03.2f} for a daily profit/loss of {}'
+              .format(actual_sold, (desired_price * actual_sold), daily_profit_or_loss))
         total_money += daily_profit_or_loss
         if total_money < cost_per_cone:
             break
@@ -92,16 +95,21 @@ while exit_ticket == "yes" or exit_ticket == "y":
     if total_money <= cost_per_cone:
         print("You do not have enough money in the bank to make any Shaved Ice. Thanks for playing")
 
-    print("You played " + str(k) + " days of the simulation and ended with $" + str(total_money))
+    #print("You played " + str(k) + " days of the simulation and ended with $".format() + str(total_money))
+    print('You played {} days of the simulation and ended with ${:03.2f}'.format(k, total_money))
 
     exit_ticket = input("Do you want to play again? Y/YES/N/NO").lower()
+    validExit = False
 
-    if exit_ticket == "y" or exit_ticket == "yes":
-        continue
-    elif exit_ticket == "n" or exit_ticket == "no":
-        break
-    else:
-        print("You must input Y or N only")
-        exit_ticket = input("Do you want to play again? Y/YES/N/NO").lower()
+    while not(validExit):
+        if exit_ticket == "y" or exit_ticket == "yes":
+            validExit = True
+            continue
+        elif exit_ticket == "n" or exit_ticket == "no":
+            validExit = True
+            break
+        else:
+            print("You must input Y or N only")
+            exit_ticket = input("Do you want to play again? Y/YES/N/NO").lower()
 
 print("Game successfully ended")
