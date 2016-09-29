@@ -1,6 +1,6 @@
 # Genetic algorithm yayyyyyyyyyyyyy
 #
-#
+#please help
 #
 #
 #
