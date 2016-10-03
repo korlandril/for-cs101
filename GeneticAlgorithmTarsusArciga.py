@@ -111,7 +111,8 @@ while True:
                             char_to_copy = chr(ord(breed1[m]) + 1)
                             new_child += char_to_copy
                         else:
-                            new_child += char_to_copy
+                            new_child += \
+                                char_to_copy
 
                     elif whatTrait >= 0.5: # Got breed2's trait
                         char_to_copy = breed2[m]
@@ -132,6 +133,7 @@ while True:
         print("Offspring were all average or below average, so they all died off. \n Just like my grade for this "
               "assignment did. \n rebooting the Star Trek franchise...")
         pointsToDeductMe += 1
+        # You kill everyone and start all over again.
 
 print("We made it to the end! Only had to reboot the population " + str(pointsToDeductMe) + " times in order"
         " to achieve obscure anime references.")
