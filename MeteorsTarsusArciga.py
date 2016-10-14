@@ -14,16 +14,18 @@
 ##4. Repeat until the user wishes to exit the program
 ##
 ##ERROR HANDLING:
-##FileNotFound
-##
+##FileNotFoundError
+##ValueError
 ##OTHER COMMENTS:
 ##
 ##
-
+#TODO: Parse the file for the desired input criteria, input meteorite information into the output file
 #####################################
 exit_ticket = "y"
 #####################################
 
+
+############################FANCY SCHMANCY FUNCTIONS###########################################################
 def get_file(prompt, process_type):
     """This gets a file with a set prompt and processing type for the file."""
     while True:
@@ -32,10 +34,58 @@ def get_file(prompt, process_type):
             return file
         except FileNotFoundError:
             print("WARNING. Inputted file not found. Please try again.")
+
+def get_coordinates():
+    """This prompts the user for the desired to geolocation to search in."""
+
+    while True:
+        try:
+            latitude = float(input("What is your desired latitude?"))
+            while latitude < -90 or latitude > 90:
+                latitude = int(input("Invalid input for latitude. You must enter a number between -90 and 90."))
+
+            longitude = float(input("What is your desired longitude?"))
+            while longitude < -180 or latitude > 180:
+                longitude = int(input("Invalid input for longitude. You must enter a number between -180 and 180."))
+            coordinates = (latitude, longitude)
+            break
+
+        except ValueError:
+            print("You did not enter a number. Please try again.")
+
+
+    #See, I could splice a string at the comma, store the values in a tuple and convert them to ints
+    #But I don't want to bother accounting for invalid input.
+
+    return coordinates
+
+def get_radius():
+    while True:
+        try:
+            radius = float(input("What is the radius you'd like to search in your given coordinates?"))
+            break
+        except ValueError:
+            print("You did not enter a number. Please try again.")
+    return radius
+
+#################################################################################################################
+
+
 #######################################################Main Loop#################################################
 while exit_ticket == "y" or exit_ticket == "yes":
-    file_to_read = get_file("Please enter the name of the file you want to pull meteorite data from.", "r")
-    file_to_write = get_file("Please enter the name of the file you would like to output data to.", "w")
+
+    file_to_read = get_file("Please enter the name of the file you want to pull meteorite data from.", 'r')
+    file_to_write = get_file("Please enter the name of the file you would like to output data to.", 'w')
+
+    desired_coordinates = get_coordinates()
+    desired_latitude = desired_coordinates[0]
+    desired_longitude = desired_coordinates[1]
+
+    desired_radius = get_radius()
+
+
+
+
 
 
 
