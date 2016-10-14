@@ -24,12 +24,18 @@
 exit_ticket = "y"
 #####################################
 
-
-while exit_ticket == "y" or exit_ticket == "yes":
+def get_file(prompt, process_type):
+    """This gets a file with a set prompt and processing type for the file."""
     while True:
         try:
-            file_to_read = open(str(input("Enter the name of the file you would like to pull meteorite data from?\n")))
-            file_to_write = open(str(input("Enter the name of the file you would like to output data to.\n")))
-            break
+            file = open(str(input(prompt)), process_type)
+            return file
         except FileNotFoundError:
-            print("WARNING: File to read from or write to was not found. Please enter valid names.")
+            print("WARNING. Inputted file not found. Please try again.")
+#######################################################Main Loop#################################################
+while exit_ticket == "y" or exit_ticket == "yes":
+    file_to_read = get_file("Please enter the name of the file you want to pull meteorite data from.", "r")
+    file_to_write = get_file("Please enter the name of the file you would like to output data to.", "w")
+
+
+
