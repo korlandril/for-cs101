@@ -128,6 +128,9 @@ while exit_ticket == "y" or exit_ticket == "yes":
 
     exit_ticket = input("Would you like to run the program again? Y/YES/N/NO").lower()
 
+    while exit_ticket != "y" or exit_ticket != "yes" or exit_ticket != "n" or exit_ticket != "no":
+        exit_ticket = input("Try again. Y/YES/N/NO").lower()
+
 #######################################################################################################################
 file_to_read.close()
 file_to_write.close()
