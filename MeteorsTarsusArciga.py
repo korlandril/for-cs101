@@ -55,7 +55,6 @@ def get_coordinates():
                 longitude = float(input("Invalid input for longitude. You must enter a number between -180 and 180."))
             coordinates = (latitude, longitude)
             return coordinates
-
         except ValueError:
             print("You did not enter a number. Please try again.")
 
