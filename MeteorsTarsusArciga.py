@@ -70,11 +70,11 @@ def get_radius():
         try:
             radius = float(input("What is the radius you'd like to search in your given coordinates?"))
             while radius <= 0:
-                float(input("You need to enter a number over 0 for the radius."))
-            break
+                radius = float(input("You need to enter a number over 0 for the radius."))
+            return radius
         except ValueError:
             print("You did not enter a number. Please try again.")
-    return radius
+
 
 def is_within_radius(point_of_origin, point_to_compare, radius):
     """Figures out if two given points are within the radius given"""
@@ -126,13 +126,23 @@ while exit_ticket == "y" or exit_ticket == "yes":
             continue
     print("Operation successfully completed. Meteorites within specified range have been added to the output file.")
 
-    exit_ticket = input("Would you like to run the program again? Y/YES/N/NO").lower()
+    exit_ticket = input("Would you like to run the program again? Y/YES/N/NO\n").lower()
+    acceptable = ["y", "yes", "n", "no"]
 
-    while exit_ticket != "y" or exit_ticket != "yes" or exit_ticket != "n" or exit_ticket != "no":
-        exit_ticket = input("Try again. Y/YES/N/NO").lower()
+    while exit_ticket not in acceptable:
+        exit_ticket = input("Try again. Y/YES/N/NO\n").lower()
+
+    wipe_file = input("Would you like to wipe the output file and start from scratch? Y/YES/N/NO".lower())
+
+    while wipe_file not in acceptable:
+        wipe_file = input("Try again. Y/YES/N/NO").lower()
+
+    if wipe_file in acceptable[0:2]:
+        open(file_to_write, 'w').close()
+
 
 #######################################################################################################################
 file_to_read.close()
 file_to_write.close()
-#c:
+
 
