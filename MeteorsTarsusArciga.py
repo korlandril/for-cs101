@@ -16,11 +16,14 @@
 ##ERROR HANDLING:
 ##FileNotFoundError
 ##ValueError
-##
+##OSError
 ##OTHER COMMENTS:
-##
-##
-#TODO: Parse the file for the desired input criteria, input meteorite information into the output file
+## I noticed in the videos that this class requires you to do the pre and post condition things when you define functions.
+## Is that really true?
+# TODO: Prompt the user whether or not they want to restart the program again
+# TODO: Document, document, document
+
+import math
 #####################################
 exit_ticket = "y"
 #####################################
@@ -35,6 +38,8 @@ def get_file(prompt, process_type):
             return file
         except FileNotFoundError:
             print("WARNING. Inputted file not found. Please try again.")
+        except OSError:
+            print("pls stop trying to break my program :/ i don't even know why using an asterisk returns an OSError")
 
 def get_coordinates():
     """This prompts the user for the desired to geolocation to search in and returns a tuple filled with the coordinates."""
@@ -43,13 +48,13 @@ def get_coordinates():
         try:
             latitude = float(input("What is your desired latitude?"))
             while latitude < -90 or latitude > 90:
-                latitude = int(input("Invalid input for latitude. You must enter a number between -90 and 90."))
+                latitude = float(input("Invalid input for latitude. You must enter a number between -90 and 90."))
 
             longitude = float(input("What is your desired longitude?"))
-            while longitude < -180 or latitude > 180:
-                longitude = int(input("Invalid input for longitude. You must enter a number between -180 and 180."))
+            while longitude < -180 or longitude > 180:
+                longitude = float(input("Invalid input for longitude. You must enter a number between -180 and 180."))
             coordinates = (latitude, longitude)
-            break
+            return coordinates
 
         except ValueError:
             print("You did not enter a number. Please try again.")
@@ -64,29 +69,36 @@ def get_radius():
     while True:
         try:
             radius = float(input("What is the radius you'd like to search in your given coordinates?"))
+            while radius <= 0:
+                float(input("You need to enter a number over 0 for the radius."))
             break
         except ValueError:
             print("You did not enter a number. Please try again.")
     return radius
 
-def is_within_radius():
-    return False
-    # TODO: STUB
+def is_within_radius(point_of_origin, point_to_compare, radius):
+    """Figures out if two given points are within the radius given"""
+    lat1 = math.radians(point_of_origin[0])
+    lat2 = math.radians(point_to_compare[0])
+    long1 = math.radians(point_of_origin[1])
+    long2 = math.radians(point_to_compare[1])
 
-def get_coordinates(document):
-    while True:
-        try:
-            for line in document:
-                coordinates = line[165:].strip()
-                newer = eval(coordinates)
-                print(newer[1])
-            break
-        except NameError:
-            continue
-        except SyntaxError:
-            continue
-    return None
-    # TODO: STUB
+    deltaLong = long2 - long1
+    deltaLat = lat2 - lat1
+
+    a = (math.sin(deltaLat/2) ** 2) + (math.cos(lat1)) * (math.cos(lat2)) * (math.sin(deltaLong/2) ** 2)
+    c = 2 * (math.atan2(math.sqrt(a), math.sqrt(1 -a)))
+    distance_in_miles = 3961 * c
+
+    if distance_in_miles <= radius:
+        return True
+    else:
+        return False
+
+def get_coordinates_from_line(document):
+    coordinates = document[165:].strip()
+    newer = eval(coordinates)
+    return newer
 #################################################################################################################
 
 
@@ -94,29 +106,30 @@ def get_coordinates(document):
 while exit_ticket == "y" or exit_ticket == "yes":
 
     file_to_read = get_file("Please enter the name of the file you want to pull meteorite data from.", 'r')
-    get_coordinates(file_to_read)
-    #TODO: PARSE THE METEORITE COORDINATES WITHOUT AN ERROR PLEASE
-    break
+    file_to_write = get_file("Please enter the name of the file you would like to output data to.", 'r+')
+    file_to_write.write(file_to_read.readline())
 
-    #file_to_write = get_file("Please enter the name of the file you would like to output data to.", 'r+')
+    desired_coordinates = get_coordinates()
+    print(desired_coordinates)
 
+    desired_radius = get_radius()
 
-    # desired_coordinates = get_coordinates()
-    # desired_latitude = desired_coordinates[0]
-    # desired_longitude = desired_coordinates[1]
-    #
-    # desired_radius = get_radius()
+    while True:
+        try:
+            for line in file_to_read:
+                 if is_within_radius(desired_coordinates, get_coordinates_from_line(line), desired_radius) == True:
+                     file_to_write.write(line)
+            break
+        except NameError:
+            continue
+        except SyntaxError:
+            continue
+    print("Operation successfully completed. Meteorites within specified range have been added to the output file.")
 
+    exit_ticket = input("Would you like to run the program again? Y/YES/N/NO").lower()
 
-
-
-
-
-
-
-
-
-# file_to_read.close()
-# file_to_write.close()
+#######################################################################################################################
+file_to_read.close()
+file_to_write.close()
 
 
