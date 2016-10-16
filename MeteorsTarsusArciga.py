@@ -17,21 +17,21 @@
 ##FileNotFoundError
 ##ValueError
 ##OSError
+##
 ##OTHER COMMENTS:
 ## I noticed in the videos that this class requires you to do the pre and post condition things when you define functions.
 ## Is that really true?
-# TODO: Prompt the user whether or not they want to restart the program again
-# TODO: Document, document, document
 
 import math
 #####################################
-exit_ticket = "y"
+exit_ticket = "y" # To kickstart the main loop
 #####################################
 
 
 ############################FANCY SCHMANCY FUNCTIONS###########################################################
 def get_file(prompt, process_type):
-    """This gets a file with a set prompt and processing type for the file."""
+    """This gets a file with a set prompt and processing type for the file.
+    Returns a file"""
     while True:
         try:
             file = open(str(input(prompt)), process_type, encoding="utf-8")
@@ -65,6 +65,9 @@ def get_coordinates():
     return coordinates
 
 def get_radius():
+    """Prompts the user for the desired radius and accounts for bad input
+    Returns a float"""
+
     while True:
         try:
             radius = float(input("What is the radius you'd like to search in your given coordinates?"))
@@ -76,12 +79,15 @@ def get_radius():
 
 
 def is_within_radius(point_of_origin, point_to_compare, radius):
-    """Figures out if two given points are within the radius given"""
+    """Figures out if two given points are within the radius given with magic
+    Returns a boolean"""
+
     lat1 = math.radians(point_of_origin[0])
     lat2 = math.radians(point_to_compare[0])
     long1 = math.radians(point_of_origin[1])
     long2 = math.radians(point_to_compare[1])
 
+    # The vague equation everyone was thankful for having been included in the assignment page
     deltaLong = long2 - long1
     deltaLat = lat2 - lat1
 
@@ -94,16 +100,17 @@ def is_within_radius(point_of_origin, point_to_compare, radius):
     else:
         return False
 
-def get_coordinates_from_line(document):
-    coordinates = document[165:].strip()
-    newer = eval(coordinates)
+def get_coordinates_from_line(document_line):
+    """Splices the swapped in line to pull the coordinates from each recording and return it as a proper tuple"""
+    coordinates = document_line[165:].strip()
+    newer = eval(coordinates) # What a convenient function c:
     return newer
 #################################################################################################################
-
 
 #######################################################Main Loop#################################################
 while exit_ticket == "y" or exit_ticket == "yes":
 
+    # Grabs the files to read and write and appends the first line of the input file to the output file
     file_to_read = get_file("Please enter the name of the file you want to pull meteorite data from.", 'r')
     file_to_write = get_file("Please enter the name of the file you would like to output data to.", 'r+')
     file_to_write.write(file_to_read.readline())
@@ -115,7 +122,7 @@ while exit_ticket == "y" or exit_ticket == "yes":
 
     while True:
         try:
-            for line in file_to_read:
+            for line in file_to_read: # iterate through each line
                  if is_within_radius(desired_coordinates, get_coordinates_from_line(line), desired_radius) == True:
                      file_to_write.write(line)
             break
@@ -130,14 +137,6 @@ while exit_ticket == "y" or exit_ticket == "yes":
 
     while exit_ticket not in acceptable:
         exit_ticket = input("Try again. Y/YES/N/NO\n").lower()
-
-    wipe_file = input("Would you like to wipe the output file and start from scratch? Y/YES/N/NO".lower())
-
-    while wipe_file not in acceptable:
-        wipe_file = input("Try again. Y/YES/N/NO").lower()
-
-    if wipe_file in acceptable[0:2]:
-        open(file_to_write, 'w').close()
 
 
 #######################################################################################################################
