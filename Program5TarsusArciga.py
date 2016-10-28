@@ -19,39 +19,50 @@
 ##
 ##
 
-import codecs
-
-# def convert_file_to_string():
-#     #TODO: STUB
-#
-# def strip_common(text):
-#     #TODO: STUB
-#
-# def string_to_list(text):
-#     """Every word becomes an element in a list"""
-#     #TODO: STUB
-#
-# def list_to_dict(lst):
-#     """Converts a list to a dict and maps the number of occurrences of the same element to the value of every word"""
-#     #TODO: STUB
-#
+import string
+from collections import Counter
 # def calculate_word_commonality(text1, dict1, text2, dict2):
 #     #TODO: STUB
 #     #Compare two dictionaries????
 # def calculate_word_frequency(dict1):
 #     #TODO: STUB
 #     #return a dict
-# def calculate_relative_freqeuncy(text1, dict1, text2, dict2):
+# def calculate_relative_frequency(text1, dict1, text2, dict2):
 #     #TODO: STUB
 #     #takes dictionaries. maybe
+stopWords = open("stopWords.txt", 'r').readlines()
+stop_list =[i.strip('\n') for i in stopWords]
 
-trump = open("trump.txt", 'r')
-clinton = open("clinton.txt", 'r', encoding="utf-8")
-romney = open("romney.txt",'r', encoding="utf-8")
-obama = open("obama.txt",'r', encoding="utf-8")
+def file_to_clean_string(file_to_clean, to_exclude):
+    punctuation = set(string.punctuation)
 
-mystery1 = open("mystery1.txt",'r', encoding="utf-8")
-mystery2 = open("mystery2.txt",'r', encoding="utf-8")
-mystery3 = open("mystery3.txt",'r', encoding="utf-8")
-mystery4 = open("mystery4.txt",'r', encoding="utf-8")
+    new_text = ""
+    for line in file_to_clean:
+        if line != "\n":
+            new_text += line
+
+    new_text = new_text.lower()
+    new_text = ''.join(ch for ch in new_text if ch not in punctuation)
+
+    clean_text_list = new_text.split()
+    no_more_stop = [x for x in clean_text_list if x not in to_exclude]
+    return no_more_stop
+
+
+trump = file_to_clean_string(open("trump.txt", 'r'), stop_list)
+clinton = file_to_clean_string(open("clinton.txt", 'r'), stop_list)
+romney = file_to_clean_string(open("romney.txt", 'r'), stop_list)
+obama = file_to_clean_string(open("obama.txt", 'r'), stop_list)
+
+mystery1 = file_to_clean_string(open("mystery1.txt", 'r'), stop_list)
+mystery2 = file_to_clean_string(open("mystery2.txt", 'r'), stop_list)
+mystery3 = file_to_clean_string(open("mystery3.txt", 'r'), stop_list)
+mystery4 = file_to_clean_string(open("mystery4.txt", 'r'), stop_list)
+
+trumptionary = Counter(trump)
+print(trumptionary)
+
+#TODO: Account for word commonality
+
+
 
