@@ -49,19 +49,28 @@ def file_to_clean_string(file_to_clean, to_exclude):
     return no_more_stop
 
 
-trump = file_to_clean_string(open("trump.txt", 'r'), stop_list)
-clinton = file_to_clean_string(open("clinton.txt", 'r'), stop_list)
-romney = file_to_clean_string(open("romney.txt", 'r'), stop_list)
-obama = file_to_clean_string(open("obama.txt", 'r'), stop_list)
+trump = Counter(file_to_clean_string(open("trump.txt", 'r'), stop_list))
+clinton = Counter(file_to_clean_string(open("clinton.txt", 'r'), stop_list))
+romney = Counter(file_to_clean_string(open("romney.txt", 'r'), stop_list))
+obama = Counter(file_to_clean_string(open("obama.txt", 'r'), stop_list))
 
-mystery1 = file_to_clean_string(open("mystery1.txt", 'r'), stop_list)
-mystery2 = file_to_clean_string(open("mystery2.txt", 'r'), stop_list)
-mystery3 = file_to_clean_string(open("mystery3.txt", 'r'), stop_list)
-mystery4 = file_to_clean_string(open("mystery4.txt", 'r'), stop_list)
+mystery1 = Counter(file_to_clean_string(open("mystery1.txt", 'r'), stop_list))
+mystery2 = Counter(file_to_clean_string(open("mystery2.txt", 'r'), stop_list))
+mystery3 = Counter(file_to_clean_string(open("mystery3.txt", 'r'), stop_list))
+mystery4 = Counter(file_to_clean_string(open("mystery4.txt", 'r'), stop_list))
 
-trumptionary = Counter(trump)
-print(trumptionary)
+trumpset = set(trump)
+mysteryset = set(mystery3)
 
+words_in_common = trumpset.intersection(mysteryset)
+
+print(words_in_common)
+print("Trump's speech has this many distinct words: " + str(len(trump)))
+print("Mystery Speech 3 has this many distinct words: " + str(len(mystery3)))
+print("They have this many words in common: " + str(len(words_in_common)))
+
+commonality_percentage = (len(words_in_common) / ((len(trumpset) + len(mysteryset)) - len(words_in_common))) * 100
+print(commonality_percentage)
 #TODO: Account for word commonality
 
 
