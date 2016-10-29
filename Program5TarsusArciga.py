@@ -19,14 +19,21 @@
 ##
 ##
 
+###########################################Gee I sure love standard modules that won't get points deducted c:##########
 import string
 import copy
 from math import sqrt
 from collections import Counter
+#######################################################################################################################
 
+######################################Look at that beautiful comprehension#############################################
 stopWords = open("stopWords.txt", 'r').readlines()
 stop_list =[i.strip('\n') for i in stopWords]
+#######################################################################################################################
 
+
+
+########################Yeah these took forever I should spend more time on my algorithms###############################
 def file_to_clean_string(file_to_clean, to_exclude):
     punctuation = set(string.punctuation)
 
@@ -79,16 +86,17 @@ def calculate_frequency_similarity(speech1, speech2):
         for key,value in speech.items():
             if key in common_words:
                 common_frequencies[key] = (first_speech_freq[key] - second_speech_freq[key]) ** 2
-    sum_of_squares  = sum(common_frequencies.values())
+    sum_of_squares = sum(common_frequencies.values())
 
     frequency_similarity = sqrt(sum_of_squares / common_length)
 
     return frequency_similarity
+#######################################################################################################################
 
-trump = Counter(file_to_clean_string(open("trump.txt", 'r'), stop_list))
-clinton = Counter(file_to_clean_string(open("clinton.txt", 'r'), stop_list))
-romney = Counter(file_to_clean_string(open("romney.txt", 'r'), stop_list))
-obama = Counter(file_to_clean_string(open("obama.txt", 'r'), stop_list))
+Trump = Counter(file_to_clean_string(open("trump.txt", 'r'), stop_list))
+Clinton = Counter(file_to_clean_string(open("clinton.txt", 'r'), stop_list))
+Romney = Counter(file_to_clean_string(open("romney.txt", 'r'), stop_list))
+Obama = Counter(file_to_clean_string(open("obama.txt", 'r'), stop_list))
 
 mystery1 = Counter(file_to_clean_string(open("mystery1.txt", 'r'), stop_list))
 mystery2 = Counter(file_to_clean_string(open("mystery2.txt", 'r'), stop_list))
@@ -110,7 +118,7 @@ print(calculate_frequency_similarity(clinton, mystery4))
 
 
 
-#TODO: Account for frequency similarity
+#TODO: Create the grand loop to compare all the known speeches w/ the mysteries, and document this fustercluck
 
 
 
