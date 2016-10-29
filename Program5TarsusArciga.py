@@ -110,7 +110,7 @@ mystery4 = Counter(file_to_clean_string(open("mystery4.txt", 'r'), stop_list))
 #print(calculate_relative_frequency(trump))
 #print(trump)
 
-print(calculate_frequency_similarity(clinton, mystery4))
+print(calculate_frequency_similarity(Clinton, mystery4))
 
 
 #print(calculate_word_commonality(romney, mystery2))
