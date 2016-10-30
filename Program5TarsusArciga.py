@@ -93,15 +93,48 @@ def calculate_frequency_similarity(speech1, speech2):
     return frequency_similarity
 #######################################################################################################################
 
-Trump = Counter(file_to_clean_string(open("trump.txt", 'r'), stop_list))
-Clinton = Counter(file_to_clean_string(open("clinton.txt", 'r'), stop_list))
-Romney = Counter(file_to_clean_string(open("romney.txt", 'r'), stop_list))
-Obama = Counter(file_to_clean_string(open("obama.txt", 'r'), stop_list))
 
-mystery1 = Counter(file_to_clean_string(open("mystery1.txt", 'r'), stop_list))
-mystery2 = Counter(file_to_clean_string(open("mystery2.txt", 'r'), stop_list))
-mystery3 = Counter(file_to_clean_string(open("mystery3.txt", 'r'), stop_list))
-mystery4 = Counter(file_to_clean_string(open("mystery4.txt", 'r'), stop_list))
+############################################I hardcoded the names of the speecehs wheeeeeee############################
+
+Trump = [Counter(file_to_clean_string(open("trump.txt", 'r'), stop_list)), "Trump"]
+Clinton = [Counter(file_to_clean_string(open("clinton.txt", 'r'), stop_list)), "Clinton"]
+Romney = [Counter(file_to_clean_string(open("romney.txt", 'r'), stop_list)), "Romney"]
+Obama = [Counter(file_to_clean_string(open("obama.txt", 'r'), stop_list)), "Obama"]
+
+mystery1 = [Counter(file_to_clean_string(open("mystery1.txt", 'r'), stop_list)),"mystery1"]
+mystery2 = [Counter(file_to_clean_string(open("mystery2.txt", 'r'), stop_list)),"mystery2"]
+mystery3 = [Counter(file_to_clean_string(open("mystery3.txt", 'r'), stop_list)),"mystery3"]
+mystery4 = [Counter(file_to_clean_string(open("mystery4.txt", 'r'), stop_list)),"mystery4"]
+
+#######################################################################################################################
+
+known_texts = [Trump, Clinton, Romney, Obama]
+mystery_texts = [mystery1, mystery2, mystery3, mystery4]
+
+for text in mystery_texts:
+    current_mystery = text[1]
+    current_best_commonality = 0.0
+    current_highest_freq = 99999.9
+    best_common_speech = ""
+    best_freq_speech = ""
+
+    for known in known_texts:
+        current_commonality = round(calculate_word_commonality(text[0],known[0]),4)
+
+        if current_commonality > current_best_commonality:
+            current_best_commonality = current_commonality
+            best_common_speech = known[1]
+
+        current_freq = round(calculate_frequency_similarity(text[0],known[0]),4)
+
+        if current_freq < current_highest_freq:
+            current_highest_freq = current_freq
+            best_freq_speech = known[1]
+
+    print("The text {} has the highest word commonality with {} ({}%)".format(current_mystery,
+    best_common_speech, current_best_commonality))
+    print("The text {} has the highest frequency similarity with {} ({})".format(current_mystery,
+    best_freq_speech, current_highest_freq) + "\n")
 
 
 
@@ -110,14 +143,11 @@ mystery4 = Counter(file_to_clean_string(open("mystery4.txt", 'r'), stop_list))
 #print(calculate_relative_frequency(trump))
 #print(trump)
 
-print(calculate_frequency_similarity(Clinton, mystery4))
+#print(calculate_frequency_similarity(Clinton, mystery4))
 
 
 #print(calculate_word_commonality(romney, mystery2))
 #print(calculate_relative_frequency(romney,mystery4))
-
-
-
 #TODO: Create the grand loop to compare all the known speeches w/ the mysteries, and document this fustercluck
 
 
