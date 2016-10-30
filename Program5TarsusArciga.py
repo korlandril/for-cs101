@@ -148,7 +148,7 @@ for text in mystery_texts:
 
 #print(calculate_word_commonality(romney, mystery2))
 #print(calculate_relative_frequency(romney,mystery4))
-#TODO: Create the grand loop to compare all the known speeches w/ the mysteries, and document this fustercluck
+#TODO: DOCUMENT THIS fustercluck
 
 
 
