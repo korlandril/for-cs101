@@ -7,11 +7,16 @@
 ##and frequency between the files.
 ##
 ##ALRGORITHM:
-##yuck.
-##
+## 1. Take every file and turn it into a string
+## 2. Strip every string of punctuation and common words
+## 3. Convert every string to a list (array), and then a dictionary (multidimensional array) assigning
+## number of occurences to each word
+## 4. For every mystery file, find the amount of common words between it and every known text and divide it by the sum of
+## words unique to both speeches
+## 5. For every mystery file,
 ##
 ##ERROR HANDLING:
-##
+##None
 ##
 ##
 ##
@@ -29,6 +34,7 @@ from collections import Counter
 ######################################Look at that beautiful comprehension#############################################
 stopWords = open("stopWords.txt", 'r').readlines()
 stop_list =[i.strip('\n') for i in stopWords]
+# Takes out those nasty blank lines in between each stop word... if they're there, at least.
 #######################################################################################################################
 
 
