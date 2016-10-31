@@ -10,10 +10,11 @@
 ## 1. Take every file and turn it into a string
 ## 2. Strip every string of punctuation and common words
 ## 3. Convert every string to a list (array), and then a dictionary (multidimensional array) assigning
-## number of occurences to each word
+## number of occurrences to each word
 ## 4. For every mystery file, find the amount of common words between it and every known text and divide it by the sum of
 ## words unique to both speeches
-## 5. For every mystery file,
+## 5. For every mystery file, compare the relative frequency of common words between it and every known text
+## via the root mean square method
 ##
 ##ERROR HANDLING:
 ##None
@@ -29,6 +30,7 @@ import string
 import copy
 from math import sqrt
 from collections import Counter
+# this makes turning lists into dicts a simple invocation c:
 #######################################################################################################################
 
 ######################################Look at that beautiful comprehension#############################################
@@ -41,20 +43,28 @@ stop_list =[i.strip('\n') for i in stopWords]
 
 ########################Yeah these took forever I should spend more time on my algorithms###############################
 def file_to_clean_string(file_to_clean, to_exclude):
+    """returns a text file in list form with all of the capitalization, punctuation, and excluded words to be
+    purged from it"""
+
     punctuation = set(string.punctuation)
+    #puts all of that punctuation in one nice lil place to cross-reference with
 
     new_text = ""
     for line in file_to_clean:
         if line != "\n":
             new_text += line
+    #Get rid of all the blank lines
 
     new_text = ''.join(ch for ch in new_text if ch not in punctuation).lower()
+    # Take out all the punctuation
 
     clean_text_list = new_text.split()
-    no_more_stop = [x for x in clean_text_list if x not in to_exclude]
+    no_more_stop = [x for x in clean_text_list if x not in to_exclude] # bye-bye stop words
     return no_more_stop
 
 def calculate_word_commonality(speech1, speech2):
+    """Takes two speeches and returns a percentage of how many words they had in common divided by
+    the total amount of words they didn't have in common"""
     first_speech = set(speech1)
     second_speech = set(speech2)
 
@@ -64,11 +74,15 @@ def calculate_word_commonality(speech1, speech2):
     words_in_common = len(first_speech.intersection(second_speech))
 
     commonality_percentage = (words_in_common / ((first_speech_distinct + second_speech_distinct) - words_in_common)* 100)
+    # We multiply by 100 in order to return the percentage
+    # I think basically this is the intersection divided by the symmetric difference??
 
     return commonality_percentage
 
 def calculate_relative_frequency(speech1):
-    rel_freq = copy.deepcopy(speech1)
+    """returns a dictionary containing the relative frequency of each element in a passed in list"""
+
+    rel_freq = copy.deepcopy(speech1) # Let's not modify that list that was passed in
     grand_total = sum(rel_freq.values())
 
     for key, value in rel_freq.items():
@@ -77,6 +91,8 @@ def calculate_relative_frequency(speech1):
     return rel_freq
 
 def calculate_frequency_similarity(speech1, speech2):
+    """returns a float of the total frequency similarity between two inputted speeches"""
+
     first_speech = set(speech1)
     second_speech = set(speech2)
     common_words = first_speech.intersection(second_speech)
@@ -92,6 +108,8 @@ def calculate_frequency_similarity(speech1, speech2):
         for key,value in speech.items():
             if key in common_words:
                 common_frequencies[key] = (first_speech_freq[key] - second_speech_freq[key]) ** 2
+    # take the common words between both speeches and their relative frequency values and do mathematical magic
+
     sum_of_squares = sum(common_frequencies.values())
 
     frequency_similarity = sqrt(sum_of_squares / common_length)
@@ -100,8 +118,11 @@ def calculate_frequency_similarity(speech1, speech2):
 #######################################################################################################################
 
 
-############################################I hardcoded the names of the speecehs wheeeeeee############################
+############################################I hardcoded the names of the speeches wheeeeeee############################
 
+# Open a file and convert it to a cleaned list, then convert that to a dictionary. All in one fell swoop c:
+# The author of the speech is also assigned to each object as well in order to be able to access it later
+# You could make this more modular by string splicing the name of the file but... yuck
 Trump = [Counter(file_to_clean_string(open("trump.txt", 'r'), stop_list)), "Trump"]
 Clinton = [Counter(file_to_clean_string(open("clinton.txt", 'r'), stop_list)), "Clinton"]
 Romney = [Counter(file_to_clean_string(open("romney.txt", 'r'), stop_list)), "Romney"]
@@ -116,9 +137,10 @@ mystery4 = [Counter(file_to_clean_string(open("mystery4.txt", 'r'), stop_list)),
 
 known_texts = [Trump, Clinton, Romney, Obama]
 mystery_texts = [mystery1, mystery2, mystery3, mystery4]
+# What a wonderful way to compare every mystery text with the known speeches. Just stuff them all in lists.
 
 for text in mystery_texts:
-    current_mystery = text[1]
+    current_mystery = text[1] # Grabs the identity of the mystery speech
     current_best_commonality = 0.0
     current_highest_freq = 99999.9
     best_common_speech = ""
@@ -129,7 +151,8 @@ for text in mystery_texts:
 
         if current_commonality > current_best_commonality:
             current_best_commonality = current_commonality
-            best_common_speech = known[1]
+            best_common_speech = known[1] # Grabs the name of the known speech
+
 
         current_freq = round(calculate_frequency_similarity(text[0],known[0]),4)
 
@@ -141,20 +164,6 @@ for text in mystery_texts:
     best_common_speech, current_best_commonality))
     print("The text {} has the highest frequency similarity with {} ({})".format(current_mystery,
     best_freq_speech, current_highest_freq) + "\n")
-
-
-
-
-
-#print(calculate_relative_frequency(trump))
-#print(trump)
-
-#print(calculate_frequency_similarity(Clinton, mystery4))
-
-
-#print(calculate_word_commonality(romney, mystery2))
-#print(calculate_relative_frequency(romney,mystery4))
-#TODO: DOCUMENT THIS fustercluck
 
 
 
