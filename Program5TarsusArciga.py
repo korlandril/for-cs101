@@ -123,10 +123,10 @@ def calculate_frequency_similarity(speech1, speech2):
 # Open a file and convert it to a cleaned list, then convert that to a dictionary. All in one fell swoop c:
 # The author of the speech is also assigned to each object as well in order to be able to access it later
 # You could make this more modular by string splicing the name of the file but... yuck
-Trump = [Counter(file_to_clean_string(open("trump.txt", 'r'), stop_list)), "Trump"]
-Clinton = [Counter(file_to_clean_string(open("clinton.txt", 'r'), stop_list)), "Clinton"]
-Romney = [Counter(file_to_clean_string(open("romney.txt", 'r'), stop_list)), "Romney"]
-Obama = [Counter(file_to_clean_string(open("obama.txt", 'r'), stop_list)), "Obama"]
+Trump = [Counter(file_to_clean_string(open("trump.txt"), stop_list)), "Trump"]
+Clinton = [Counter(file_to_clean_string(open("clinton.txt"), stop_list)), "Clinton"]
+Romney = [Counter(file_to_clean_string(open("romney.txt"), stop_list)), "Romney"]
+Obama = [Counter(file_to_clean_string(open("obama.txt"), stop_list)), "Obama"]
 
 mystery1 = [Counter(file_to_clean_string(open("mystery1.txt", 'r'), stop_list)),"mystery1"]
 mystery2 = [Counter(file_to_clean_string(open("mystery2.txt", 'r'), stop_list)),"mystery2"]
